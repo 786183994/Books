@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}素忆{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px; margin-bottom: 70px">
+         <div class="swiper-container" style="height: 13%; width: 100%">
+             <div class="swiper-wrapper"  style="height: 100%; width: 100%">
+                 {% for banner in all_banners %}
+                     <div class="swiper-slide">
+                        <a href="{{ banner.url }}">
+                            <img style="height: 100%; width: 100%" src="http://39.107.72.87:9000/media/{{ banner.image }}" />
+                        </a>
+                     </div>
+                 {% endfor %}
+             </div>
+
+             <div class="swiper-pagination"></div>
+             <div class="swiper-button-prev"></div>
+             <div class="swiper-button-next"></div>
+         </div>
+        <table class="table table-hover" style="margin-top: 20px">
+            <tr class="text-center" >
+                <td ><a class="btn btn-default btn-block" href="{% url 'contact_show_list_nofinish' 1 %}" role="button">众筹</a></td>
+                <td><a class="btn btn-default btn-block" href="{% url 'contact_show_list' 2 %}" role="button">完成</a></td>
+            </tr>
+        </table>
+
+        {% for book in books %}
+            {% if msg_code == '1' %}
+                {% if  book.get_nums != 100 %}
+                    <p id="book_id" hidden>{{ book.id }}</p>
+                    <div class="panel panel-default">
+
+                    <a href="{% url 'contact_book_show' book.id %}">
+                        <div>
+                            <h4><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 《{{ book.book_title }}》
+                                <small>(第{{ book.book_volume }}册)</small>
+                            </h4>
+                            <p class="text-center">{{ book.book_introduction }}</p>
+                            <p class="text-right">众筹进度</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{ book.get_nums }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ book.get_nums }}%">
+                                    {{ book.get_nums }}%
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <p></p>
+                        <p class="text-right" onclick="add_fav($(this), {{ book.id }}, 1)">
+                         {{ book.collection_whether }}
+                    </p>&nbsp;&nbsp;
+                    <p class="text-right" onclick="click_fav($(this), {{ book.id }}, 1)">
+                         {{ book.fav_whether }}
+                    </p>
+                </div>
+                {% endif %}
+            {% elif msg_code == '2' %}
+                 {% if  book.get_nums == 100 %}
+                    <p id="book_id" hidden>{{ book.id }}</p>
+                    <div class="panel panel-default">
+
+                    <a href="{% url 'contact_book_show' book.id %}">
+                        <div>
+                            <h4><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 《{{ book.book_title }}》
+                                <small>(第{{ book.book_volume }}册)</small>
+                            </h4>
+                            <p class="text-center">{{ book.book_introduction }}</p>
+                            <p class="text-right">众筹进度</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{ book.get_nums }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ book.get_nums }}%">
+                                    {{ book.get_nums }}%
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    <p></p>
+                    <p class="text-right" onclick="add_fav($(this), {{ book.id }}, 1)">
+                         {{ book.collection_whether }}
+                    </p>&nbsp;&nbsp;
+                    <p class="text-right" onclick="click_fav($(this), {{ book.id }}, 1)">
+                         {{ book.fav_whether }}
+                    </p>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="panel panel-default" style="margin-top: 20px;background: #eee8e0">
+                <div class="panel-body">
+                    <a href="{% url 'contact_show' book.id %}">
+                        <div>
+                            <h4><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 《{{ book.book_title }}》
+                                <small>(第{{ book.book_volume }}册)</small>
+                            </h4>
+                            <p></p><p></p>
+                            <p class="text-center">{{ book.book_introduction }}</p>
+                            <p class="text-right">众筹进度</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{ book.get_nums }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ book.get_nums }}%">
+                                    {{ book.get_nums }}%
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <p class="text-right" onclick="add_fav($(this), {{ book.id }}, 1)">
+                         {{ book.collection_whether }}
+
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span onclick="click_fav($(this), {{ book.id }}, 1)">
+                         {{ book.fav_whether }}
+                    </span>
+                    </p>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+
+        <nav class=" navbar-fixed-bottom" style="margin: 50px 15px">
+            <nav aria-label="pagination-sm">
+                    <ul class="pager">
+                        <li>
+                            {% if has_sign_in %}
+                                <a class="btn btn-default btn-lg" href="{% url 'sign_in' %}" role="button">签到</a>
+
+                            {% endif %}
+                        </li>
+                    </ul>
+                </nav>
+            </nav>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+          var mySwiper = new Swiper(".swiper-container",{
+              autoplay:1000,//每秒中轮播一次
+              loop:true,//可以让图片循环轮播
+              autoplayDisableOnInteraction:false,//在点击之后可以继续实现轮播
+              pagination:".swiper-pagination",//让小圆点显示
+              paginationClickable:true,//实现小圆点点击
+              prevButton:".swiper-button-prev",//实现上一页的点击
+              nextButton:".swiper-button-next",//实现下一页的点击
+              effect:"flip",//可以实现3D效果的轮播
+          });
+
+            //收藏分享
+            function add_fav(current_elem, fav_id, fav_type){
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url:"/add_fav/",
+                data:{'fav_id':fav_id, 'fav_type':fav_type},
+                async: true,
+                beforeSend:function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    if(data.status == 'fail'){
+                        if(data.msg == '用户未登录'){
+                            window.location.href="/login/";
+                        }else{
+                            alert(data.msg)
+                        }
+                    }else if(data.status == 'success'){
+                        current_elem.text(data.msg)
+                    }
+                },
+            });
+            }
+
+{% comment %}            $('#jsLeftBtn').on('click', function(){
+            add_fav($(this), $('#book_id').text(), 1);
+            });{% endcomment %}
+
+            //点赞
+            function click_fav(current_elem, fav_id, fav_type){
+            $.ajax({
+                cache: false,
+                type: "POST",
+                url:"/click_fav/",
+                data:{'fav_id':fav_id, 'fav_type':fav_type},
+                async: true,
+                beforeSend:function(xhr, settings){
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                },
+                success: function(data) {
+                    if(data.status == 'fail'){
+                        if(data.msg == '用户未登录'){
+                            window.location.href="/login/";
+                        }else{
+                            alert(data.msg)
+                        }
+
+                    }else if(data.status == 'success'){
+                        current_elem.text(data.msg)
+                    }
+                },
+            });
+            }
+
+{% comment %}            $('#jsRightBtn').on('click', function(){
+            click_fav($(this), $('#book_id').text(), 1);
+            });{% endcomment %}
+
+</script>
+{% endblock %}

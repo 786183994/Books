@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}这个是自己写的文章{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px">
+
+            {% for bookdetail in bookdetails %}
+
+                <div class="panel panel-default">
+                <a href="{% url 'contact_book_show_id' bookdetail.id %}">
+                    <div class="panel-body">
+                        <h4>题目 </h4>
+                        <p><small>{{ bookdetail.title }}</small></p>
+                    </div>
+                    <div class="panel-footer">
+                        <p>{{ bookdetail.get_content }}</p>
+                    </div>
+                    </a>
+                </div>
+            {% endfor %}
+		</div>
+{% endblock %}

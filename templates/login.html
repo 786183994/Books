@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>欢迎您登录平台</title>
+
+        <!-- Bootstrap core CSS -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+        <!-- Custom styles for this template -->
+        <link href="{% static 'css/signin.css' %}" rel="stylesheet">
+    </head>
+
+    <body class="text-center">
+        <div>
+            <form class="form-signin" method="post" autocomplete="off" action="{% url 'login' %}">
+                <img class="mb-4" src="" alt="LOGO" width="72" height="72">
+                <h1 class="h3 mb-3 font-weight-normal">欢迎您登录</h1>
+
+                <label for="exampleInputName2"  class="sr-only {% if login_form.errors.username %}errorput{% endif %}">用户名</label>
+                <input type="text" name="username" class="form-control" id="exampleInputName2" placeholder="用户名/邮箱" >
+                <p></p>
+
+                <label for="inputPassword" class="sr-only {% if login_form.errors.password %}errorput{% endif %}">密码</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" placeholder="请输入您的密码" required>
+                <p></p>
+
+                <div class="error btns login-form-tips" id="jsLoginTips">{% for key,error in login_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</div>
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" value="remember-me"> 记住我
+                    </label>
+                </div>
+                <p></p>
+                <!--<button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>-->
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="登陆"/>
+                <p></p>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+                {% csrf_token %}
+            </form>
+            <p class="form-p">没有本软件帐号？<a href="{% url 'register' %}">[立即注册]</a></p>
+            <p class="form-p">忘记本软件帐号？<a class="fr" href="">[找回密码]</a></p>
+        </div>
+    </body>
+</html>

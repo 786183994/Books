@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}能让用户评论的页面{% endblock %}
+
+{% block content %}
+    <div>
+        <div class="container" style="margin-top: 20px">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <p><small><span>{{ edits.title }}</span></small></p>
+                </div>
+                <div class="panel-footer" style="background-color: #eee8e0">
+                    <p>{{ edits.content }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="comment">
+            <form class="form-signin" method="post" autocomplete="off" action="{% url 'contact_msg' edits.id %}">
+                <textarea class="form-control" name="content" rows="3" placeholder="留下您的评论吧！"></textarea>
+{#                <input type="text" class="form-control" id="inputEmail" name="content" placeholder="留下您的评论吧！" >#}
+                <p></p>
+                <p class="text-right"><input class="btn btn-default" type="submit" value="发表"/></p>
+                <hr>
+                {% csrf_token %}
+            </form>
+
+            {% for comment in comment_all %}
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <p>{{ comment.com_content }}</p>
+                        <p class="text-right"> <a href="">{{ comment.com_user.username }} &nbsp;&nbsp; {{ comment.add_time }} &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+                        </a> <a href="#">点赞</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+

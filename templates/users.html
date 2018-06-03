@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}个人中心{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px; margin-bottom: 30px">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h4>{{ user.nick_name }}<small>BID {{ user.author_number }}</small></h4>
+                <p>{{ user.signature }}</p>
+                <a href="{% url 'logout' %}"><h6 class="text-right">退出</h6></a>
+            </div>
+
+            <div >
+                <p></p>
+                <a href="{% url 'cangshuzheng' %}">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            我的藏书证
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{% url 'quanxian' %}">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            我的权限
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{% url 'shoucangpin' %}">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            我收藏的书籍
+                        </div>
+                    </div>
+                </a>
+
+{#                <a href="fenxiangyemian.html">#}
+{#                    <div class="panel panel-default">#}
+{#                        <div class="panel-body container">#}
+{#                            好友邀请#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </a>#}
+
+                <a href="{% url 'onthecollectionpin' %}">
+                    <div class="panel panel-default">
+                        <div class="panel-body container">
+                            关于收藏品
+                        </div>
+                    </div>
+                </a>
+
+                <a href="{% url 'guanyuwomen' %}">
+                    <div class="panel panel-default">
+                        <div class="panel-body container">
+                            关于我们
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://wj.qq.com/s/2159347/4ef2/">
+                    <div class="panel panel-default">
+                        <div class="panel-body container">
+                            问题反馈
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

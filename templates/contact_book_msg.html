@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}给XX的信封{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<h4>题目 </h4>
+                    <small>{{ bookdetails.title }}</small>
+				</div>
+				<div class="panel-footer" style="background-color: #4cae4c">
+					<p>{{ bookdetails.content }}</p>
+				</div>
+			</div>
+		</div>
+
+    <nav class=" navbar-fixed-bottom" style="margin: 0px 15px">
+			<nav aria-label="pagination-sm">
+				<ul class="pager">
+					{% if edit_up_id %}
+                        <li class="previous pagination-sm"><a href="{% url 'contact_msg' edit_up_id %}"><span aria-hidden="true"  >&larr;</span> 上</a></li>
+                    {% endif %}
+                    {% if edit_down_id %}
+                    	<li class="next pagination-sm"><a href="{% url 'contact_msg' edit_down_id %}">下 <span aria-hidden="true" >&rarr;</span></a></li>
+                    {% endif %}</ul>
+			</nav>
+		</nav>
+{% endblock %}
+

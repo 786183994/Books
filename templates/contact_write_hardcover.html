@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}素忆-编辑{% endblock %}
+
+{% block content %}
+	  <form class="form-signin" method="post" autocomplete="off" action="{% url 'edit_say_hardcover' %}">
+			<div class="container" style="margin-top: 20px">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<input type="text" name="title" class="form-control" placeholder="我是一个题目">
+					</div>
+					<div class="panel-footer">
+{#                        <input type="text" name="content" style="height: 300px;min-height: 15px;max-height: 500px" class="form-control" placeholder="我是一个内容">#}
+{#                        <p class="msg_content">我是内容哦！</p>#}
+                        <textarea name="text" class="msg_content" id="contents" title="Contents"></textarea>
+                    </div>
+				</div>
+			</div>
+
+          <nav class="" style="margin: 0px 0px">
+				<nav aria-label="pagination-sm">
+					<ul class="pager">
+						<li>
+                            <input class="btn btn-default btn-lg" type="submit" value="提交"/>
+                        </li>
+					</ul>
+				</nav>
+			</nav>
+        {% csrf_token %}
+	  </form>
+{% endblock %}
+
+{% block custom_js %}
+
+    <script type="text/javascript">
+        $(function() {
+            $('.msg_content').summernote({
+                              height: 300,                 // 定义编辑框高度
+              minHeight: null,             // 定义编辑框最低的高度
+              maxHeight: null,             // 定义编辑框最高德高度
+              <!--工具栏-->
+              toolbar: [
+                  <!--字体工具-->
+                  // ['fontname', ['fontname']], //字体系列
+                  // ['style', ['bold', 'italic', 'underline', 'clear']], // 字体粗体、字体斜体、字体下划线、字体格式清除
+                  // ['font', ['strikethrough', 'superscript', 'subscript']], //字体划线、字体上标、字体下标
+                  ['fontsize', ['fontsize']], //字体大小
+                  // ['color', ['color']], //字体颜色
+
+                  <!--段落工具-->
+                  // ['style', ['style']],//样式
+                  // ['para', ['ul', 'ol', 'paragraph']], //无序列表、有序列表、段落对齐方式
+                  // ['height', ['height']], //行高
+
+                  <!--插入工具-->
+                  // ['table',['table']], //插入表格
+                  {#['hr', ['hr']],//插入水平线#}
+                  {#['link',['link']], //插入链接#}
+                  {#['picture', ['picture']], //插入图片#}
+                  {#['video',['video']], //插入视频#}
+
+                  <!--其它-->
+                  // ['fullscreen',['fullscreen']], //全屏
+                  // ['codeview',['codeview']], //查看html代码
+                  {#['undo', ['undo']], //撤销#}
+                  {#['redo', ['redo']], //取消撤销#}
+                  // ['help',['help']], //帮助
+              ],
+              lang: 'zh-CN',  //设置中文，需引入中文插件summernote-zh-CN.js
+
+            });
+{% comment %}
+            $('form').on('submit', function (e) {
+                e.preventDefault();
+                alert($('.msg_content').summernote('code'));
+            });{% endcomment %}
+        });
+
+     {% comment %} $(document).ready(function() {
+          $('#msg_content').summernote({
+              height: 300,                 // 定义编辑框高度
+              minHeight: null,             // 定义编辑框最低的高度
+              maxHeight: null,             // 定义编辑框最高德高度
+              <!--工具栏-->
+              toolbar: [
+                  <!--字体工具-->
+                  // ['fontname', ['fontname']], //字体系列
+                  // ['style', ['bold', 'italic', 'underline', 'clear']], // 字体粗体、字体斜体、字体下划线、字体格式清除
+                  // ['font', ['strikethrough', 'superscript', 'subscript']], //字体划线、字体上标、字体下标
+                  ['fontsize', ['fontsize']], //字体大小
+                  // ['color', ['color']], //字体颜色
+
+                  <!--段落工具-->
+                  // ['style', ['style']],//样式
+                  // ['para', ['ul', 'ol', 'paragraph']], //无序列表、有序列表、段落对齐方式
+                  // ['height', ['height']], //行高
+
+                  <!--插入工具-->
+                  // ['table',['table']], //插入表格
+                  ['hr', ['hr']],//插入水平线
+                  ['link',['link']], //插入链接
+                  ['picture', ['picture']], //插入图片
+                  ['video',['video']], //插入视频
+
+                  <!--其它-->
+                  // ['fullscreen',['fullscreen']], //全屏
+                  // ['codeview',['codeview']], //查看html代码
+                  ['undo', ['undo']], //撤销
+                  ['redo', ['redo']], //取消撤销
+                  // ['help',['help']], //帮助
+              ],
+              lang: 'zh-CN',  //设置中文，需引入中文插件summernote-zh-CN.js
+              //查看更多配置(https://summernote.org/deep-dive/)
+              //下面重写上传图片方法
+              callbacks: {
+                  onImageUpload: function (files) {
+                      //上传图片到服务器，使用了formData对象，至于兼容性...据说对低版本IE不太友好
+                      var formData = new FormData();
+                      formData.append('file', files[0]);
+                      $.ajax({
+                          url: '',//后台文件上传接口
+                          type: 'POST',
+                          data: {'formData': formData},
+                          processData: false,
+                          contentType: false,
+                          success: function (data) {
+                              $('#summernote').summernote('insertImage', data, 'img');
+                          }
+                      });
+                  }
+              }
+          });
+          $('#summernote').summernote('insertImage', url, filename);
+      {);{% endcomment %}
+  </script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}这个是单独图书的页面{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px">
+                {% for index_book in index_books %}
+                    {% if  index_book.get_nums == 100 %}
+                        <p id="book_id" hidden>{{ index_book.id }}</p>
+                        <div class="panel panel-default">
+
+                        <a href="{% url 'contact_book_show' index_book.id %}">
+                            <div class="panel-body">
+                                <h4>题目 </h4>
+                                <p><small><a href="">《{{ index_book.book_title }}》</a><span style="color: #ac2925">第{{ index_book.book_volume }}册</span></small></p>
+                            </div>
+                            <div class="panel-footer">
+                                <p>{{ index_book.book_introduction }}</p>
+                            </div>
+                        </a>
+                        <p></p>
+                        <span id="jsLeftBtn">
+                             {% if has_fav_book %}已收藏{% else %}收藏{% endif %}
+                        </span>&nbsp;&nbsp;
+                        <span id="jsRightBtn">
+                             {% if has_click_book %}已点赞{% else %}点赞{% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+{% endblock %}
+
+{% block custom_js %}
+   <script>
+        function add_fav(current_elem, fav_id, fav_type){
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url:"/add_fav/",
+            data:{'fav_id':fav_id, 'fav_type':fav_type},
+            async: true,
+            beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+            success: function(data) {
+                if(data.status == 'fail'){
+                    if(data.msg == '用户未登录'){
+                        window.location.href="/login/";
+                    }else{
+                        alert(data.msg)
+                    }
+
+                }else if(data.status == 'success'){
+                    current_elem.text(data.msg)
+                }
+            },
+        });
+        }
+
+        $('#jsLeftBtn').on('click', function(){
+        add_fav($(this), $('#book_id').text(), 1);
+        });
+
+        //点赞
+        function click_fav(current_elem, fav_id, fav_type){
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url:"/click_fav/",
+            data:{'fav_id':fav_id, 'fav_type':fav_type},
+            async: true,
+            beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+            success: function(data) {
+                if(data.status == 'fail'){
+                    if(data.msg == '用户未登录'){
+                        window.location.href="/login/";
+                    }else{
+                        alert(data.msg)
+                    }
+
+                }else if(data.status == 'success'){
+                    current_elem.text(data.msg)
+                }
+            },
+        });
+        }
+
+        $('#jsRightBtn').on('click', function(){
+        click_fav($(this), $('#book_id').text(), 1);
+        });
+   </script>
+{% endblock %}

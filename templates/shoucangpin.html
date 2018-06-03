@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}素忆-书籍收藏{% endblock %}
+
+{% block content %}
+    <div class="container" style="margin-top: 20px">
+
+        {% for book in books %}
+            {% if book.collection_whether == "已收藏" %}
+                <div class="panel panel-default" >
+                    <a type="button" data-toggle="modal" data-target=".bs-example-modal-sm">
+                        <div id="{{ book.id }}">
+                            <h4><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> 《{{ book.book_title }}》
+                                <small>(第{{ book.book_volume }}册)</small>
+                            </h4>
+                            <p id="book_id">{{ book.book_number }}</p>
+                            <p class="text-center">{{ book.book_introduction }}</p>
+                            <p class="text-right">众筹进度</p>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="{{ book.get_nums }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ book.get_nums }}%">
+                                    {{ book.get_nums }}%
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% endif %}
+			<br/>
+    {% endfor %}
+		</div>
+
+  <!--这里是弹框的代码，调用一次就可以-->
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" style="margin-top: 120px">
+	  <div class="modal-dialog modal-sm" role="document">
+		  <div class="modal-content">
+			  <p></p>
+			  <p>	珍藏册编号：</p>
+              <p id="p"></p>
+			  <hr>
+			  <p>珍藏册状态：</p>
+			  <p>。。</p>
+			  <hr>
+			  <p>具体位置：</p>
+			  <p>这是一个秘密哦！</p>
+			  <hr>
+			  <p></p>
+		  </div>
+	  </div>
+
+  </div>
+{% endblock %}
+
+{% block foot %}
+    <table class="table table-hover navbar-fixed-bottom">
+	<tr class="text-center">
+		<td><a href="{% url 'users' %}" role="button"><span style="font-size: large">返&nbsp;&nbsp;&nbsp;回</span></a></td>
+	</tr>
+</table>
+{% endblock %}
+
+{% block custom_js %}
+<script type="text/javascript">
+        var div = $('#book_id').text();
+        {#alert(div);#}
+        $('#p').text(div);
+</script>
+{% endblock %}
