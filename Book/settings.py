@@ -26,7 +26,8 @@ sys.path.insert(0, os.path.join(BASE_DIR,'apps'))# 表示根搜索路径
 SECRET_KEY = 'ym=@@0sbq+8nmr3$vq4x2w%#t4f=k8aa44_5%-$v@xj$q(%2^b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost ', '.39.107.72.87']
 
 ALLOWED_HOSTS = ['*']
 
